@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="{{url_for('static', filename='index.css')}}">
-        <script src="{{url_for('static', filename='index.js')}}"></script>
-    </head>
-    <body>
-        <h1>article page.</h1>
-        <p id="comment">Your input value is " {{output_value}} "</p>
-    </body>
-</html>
+{% extends "common_page_content.html" %}
+{% block body %}
+    <h1>output page.</h1>
+    <p id="comment">Your input value is " {{output_value}} "</p>
+    <form action="/" method="get">
+        <button type="submit" name="button2" value="q=back">back to the top page.</button>
+    </form>
+{% endblock %}

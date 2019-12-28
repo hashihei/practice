@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    </head>
-    <body>
-      <p id="comment">This is a static html page.</p>
-      <form action="/article1" method="post">
-        <input type="text" name="input1" placeholder="ex) Hello World.">
-        <button type="submit" name="post_value" value="from post">post submit</button>
-      </form>
-    </body>
-</html>
+{% extends "common_page_content.html" %}
+{% block body %}
+  <p id="comment">This is a static html page.</p>
+  <form action="/article1" method="post">
+    <input type="text" name="input1" placeholder="ex) Hello World.">
+    <button type="submit" name="post_value" value="from post">post submit</button>
+  </form>
+{% endblock %}

@@ -28,7 +28,7 @@ def static_main_page():
 @app.route('/article1', methods=['GET', 'POST'])
 def static_article_page():
     if request.method == 'GET':
-        input_value = request.args.get('get_value')
+        input_value = request.args.get('input1')
     elif request.method == 'POST':
         input_value = request.form['input1']
 

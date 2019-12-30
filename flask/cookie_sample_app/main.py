@@ -20,6 +20,25 @@ from datetime import datetime
 # called `app` in `main.py`.
 app = Flask(__name__)
 
+
+def set_cookie_value(name, value, page, value=None):
+
+    #POSTの際はcookieに入力値を設定する
+    #cookieを返すためのresponseオブジェクトを作成する
+    cookie_content = render_template(page, output_value=value)
+    response = make_response(cookie_content)
+    
+    #cookieの設定を行う
+    key_name = name
+    key_value = value
+    max_age = 60 * 24 #expire 1day.
+    expires = int(datetime.now().timestamp()) + max_age
+    path = "/"
+    domain = None
+    
+    response.set_cookie(key_name,key_value,max_age,expires,path,domain,secure=None, httponly=False)
+    return response
+
 @app.route('/')
 def static_main_page():
 
@@ -34,7 +53,6 @@ def static_main_page():
     else :
         pword_text = 'ex)' + privious_word
 
-    print(pword_text)
     return render_template("index.html",pword=pword_text)
 
 
@@ -45,21 +63,9 @@ def static_article_page():
     elif request.method == 'POST':
         input_value = request.form['input1']
 
-        #POSTの際はcookieに入力値を設定する
-        #cookieを返すためのresponseオブジェクトを作成する
-        cookie_content = render_template("article1.html", output_value=input_value)
-        response = make_response(cookie_content)
+    set_cookie_value()   
 
-        #cookieの設定を行う
-        key_name = "cookie_sample"
-        key_value = input_value
-        max_age = 60 * 24 #expire 1day.
-        expires = int(datetime.now().timestamp()) + max_age
-        path = "/"
-        domain = None
         
-        response.set_cookie(key_name,key_value,max_age,expires,path,domain,secure=None, httponly=False)
-        return response
 
     return render_template("article1.html", output_value=input_value)
 

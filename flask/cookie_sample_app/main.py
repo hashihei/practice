@@ -21,22 +21,25 @@ from datetime import datetime
 app = Flask(__name__)
 
 
-def set_cookie_value(name, value, page, value=None):
-
-    #POSTの際はcookieに入力値を設定する
-    #cookieを返すためのresponseオブジェクトを作成する
-    cookie_content = render_template(page, output_value=value)
-    response = make_response(cookie_content)
+#
+# response に対し、cookie name, cookie valueを設定する
+#
+def set_cookie_value(name, value, response):
     
-    #cookieの設定を行う
+    #cookieの値を設定する
     key_name = name
     key_value = value
+    
+    #cookie全般の設定を行う
     max_age = 60 * 24 #expire 1day.
     expires = int(datetime.now().timestamp()) + max_age
     path = "/"
     domain = None
     
+    #cookieをセット
     response.set_cookie(key_name,key_value,max_age,expires,path,domain,secure=None, httponly=False)
+
+    #cookieをセットしたresponseを返す
     return response
 
 @app.route('/')
@@ -45,13 +48,14 @@ def static_main_page():
     #
     #cookie の有無を確認し、出力を行う
     #
-    privious_word = request.cookies.get('cookie_sample')
-    print (privious_word)
+    privious_word = request.cookies.get('cookie_test.hashihei.com')
+
+    #cookie の有無を確認
     if privious_word is None:
-        print ("is None type.")
         pword_text = 'ex) Hello World.'
     else :
-        pword_text = 'ex)' + privious_word
+        #cookieがセットされていれば、内容を例として表示
+        pword_text = 'ex) ' + privious_word
 
     return render_template("index.html",pword=pword_text)
 
@@ -63,11 +67,16 @@ def static_article_page():
     elif request.method == 'POST':
         input_value = request.form['input1']
 
-    set_cookie_value()   
+    #POSTの際はcookieに入力値を設定する
+    #cookieを返すためのresponseオブジェクトを作成する
+    cookie_content = render_template("article1.html", output_value=input_value)
+    response = make_response(cookie_content)
 
-        
+    #cookieの値をセットする
+    response = set_cookie_value("cookie_test.hashihei.com", input_value, response)        
 
-    return render_template("article1.html", output_value=input_value)
+    #article1を表示し、ブラウザにcookieをセットする
+    return response
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App

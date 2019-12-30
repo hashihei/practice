@@ -13,7 +13,8 @@
 # limitations under the License.
 
 # [START gae_python37_app]
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request , make_response
+from datetime import datetime
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -21,7 +22,21 @@ app = Flask(__name__)
 
 @app.route('/')
 def static_main_page():
-    return render_template("index.html")
+
+    #
+    #cookie の有無を確認し、出力を行う
+    #
+    privious_word = request.cookies.get('cookie_sample')
+    print (privious_word)
+    if privious_word is None:
+        print ("is None type.")
+        pword_text = 'ex) Hello World.'
+    else :
+        pword_text = 'ex)' + privious_word
+
+    print(pword_text)
+    return render_template("index.html",pword=pword_text)
+
 
 @app.route('/article1', methods=['GET', 'POST'])
 def static_article_page():
@@ -30,8 +45,23 @@ def static_article_page():
     elif request.method == 'POST':
         input_value = request.form['input1']
 
-    return render_template("article1.html", output_value=input_value)
+        #POSTの際はcookieに入力値を設定する
+        #cookieを返すためのresponseオブジェクトを作成する
+        cookie_content = render_template("article1.html", output_value=input_value)
+        response = make_response(cookie_content)
 
+        #cookieの設定を行う
+        key_name = "cookie_sample"
+        key_value = input_value
+        max_age = 60 * 24 #expire 1day.
+        expires = int(datetime.now().timestamp()) + max_age
+        path = "/"
+        domain = None
+        
+        response.set_cookie(key_name,key_value,max_age,expires,path,domain,secure=None, httponly=False)
+        return response
+
+    return render_template("article1.html", output_value=input_value)
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App

@@ -2,7 +2,7 @@
 {% block body %}
   <p id="comment">This is a static html page.</p>
   <form action="/article1" method="post">
-    <input type="text" name="input1" placeholder="ex) Hello World.">
+    <input type="text" name="input1" placeholder="{{pword}}">
     <button type="submit" name="post_value" value="from post">post submit</button>
   </form>
 {% endblock %}

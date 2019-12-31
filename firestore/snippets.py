@@ -1,6 +1,8 @@
 from google.cloud import firestore
 
 # Project ID is determined by the GCLOUD_PROJECT environment variable
+# windows powershell : $env:GCLOUD_PROJECT="project-name"
+
 # create firestore client
 db = firestore.Client()
 

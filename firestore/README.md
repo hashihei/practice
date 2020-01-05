@@ -1,4 +1,3 @@
----
 ## Firestoreの操作(Python)
 ### snippets.py
 * 最初のプログラム。
@@ -13,4 +12,3 @@
 4. データの更新
 
 [Cloud Firestoreにデータを追加する](https://firebase.google.com/docs/firestore/manage-data/add-data?hl=ja)
----

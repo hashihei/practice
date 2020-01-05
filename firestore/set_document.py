@@ -22,8 +22,22 @@ data = {
     'country': 'USA'
 }
 
-# Add a new doc in collection 'cities' with ID 'LA'
+# Add a new doc in collection 'cities' with ID 'SF'
 db.collection('cities').document('SF').set(data)
+
+# Add a new doc in collection 'cities' with auto ID
+# nest data
+const city_add = db.collection('cities').doc()
+await city_add.set({
+    data:{
+        name : 'oregon',
+        state : 'OR',
+        country : 'USA'
+    }
+    data_seq : 1,
+    create: firebase.firestore.FieldValue.serverTimestamp(),
+    update: firebase.firestore.FieldValue.serverTimestamp(),
+})
 
 # merge=True then, overwritten and add field when document exist.
 #  merge=True : SF => {'state': 'SF', 'capital': False, 'name': 'san francisco', 'country': 'USA'}
